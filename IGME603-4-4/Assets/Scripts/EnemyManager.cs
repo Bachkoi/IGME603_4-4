@@ -10,6 +10,10 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] public int activeStatic;
     [SerializeField] Canvas canvas;
     [SerializeField] public int targetsSpawned;
+    //New variables for obstacles
+    [SerializeField] public GameObject[] obstacles;
+
+
 
 
     // Start is called before the first frame update
@@ -31,19 +35,23 @@ public class EnemyManager : MonoBehaviour
                 if (enemy.activeSelf == false)
                 {
                     targetsSpawned++;
-                    enemy.SetActive(true);
+                    /*enemy.SetActive(true);
                     float scalar = Random.Range(0.2f, 1.0f);
                     enemy.transform.localScale *= scalar;
                     //enemy.transform.position = new Vector3(canvas.GetComponent<RectTransform>().rect.width * Random.Range(-0.7f, 0.7f), canvas.GetComponent<RectTransform>().rect.height * scalar, enemy.transform.position.z);
                     if(scalar < 0.5f)
                     {
                         enemy.transform.position = new Vector3(9.9f * Random.Range(-0.7f, 0.7f), 3.98f * (1.0f-scalar), enemy.transform.position.z);
+                        
 
                     }
                     else
                     {
                         enemy.transform.position = new Vector3(9.9f * Random.Range(-0.7f, 0.7f), -3.98f * scalar, enemy.transform.position.z);
-                    }
+                    }*/
+                    //Find a randam obstacle and generate an enemy in the available end
+                    int targetObstacles = Random.Range(0, obstacles.Length);
+                    obstacles[targetObstacles].GetComponent<Obstacles>().SpawnOpponent(enemy);
 
                     activeStatic++;
                 }
@@ -56,5 +64,11 @@ public class EnemyManager : MonoBehaviour
                 enemy.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
             }
         }
+    }
+
+    void SpawnEnemy(GameObject[] obj, GameObject enemy)
+    {
+        int targetObstacles = Random.Range(0, obj.Length);
+        obj[targetObstacles].GetComponent<Obstacles>().SpawnOpponent(enemy);
     }
 }
