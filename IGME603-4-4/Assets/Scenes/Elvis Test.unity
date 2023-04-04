@@ -290,7 +290,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6719373331590429282, guid: a1b36deb7e6e5534b97097bbada2d9cc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.54
+      value: -1.34
       objectReference: {fileID: 0}
     - target: {fileID: 6719373331590429282, guid: a1b36deb7e6e5534b97097bbada2d9cc, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1360,7 +1360,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f8a51fef18af84d4ea9d8cdef2aca110, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 135258b6f0b45cc4c9254c47511b75eb, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2453,7 +2453,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6719373331590429282, guid: a1b36deb7e6e5534b97097bbada2d9cc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.75
+      value: -2.33
       objectReference: {fileID: 0}
     - target: {fileID: 6719373331590429282, guid: a1b36deb7e6e5534b97097bbada2d9cc, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3748,7 +3748,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6719373331590429282, guid: a1b36deb7e6e5534b97097bbada2d9cc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.5
+      value: -3.35
       objectReference: {fileID: 0}
     - target: {fileID: 6719373331590429282, guid: a1b36deb7e6e5534b97097bbada2d9cc, type: 3}
       propertyPath: m_LocalPosition.z
