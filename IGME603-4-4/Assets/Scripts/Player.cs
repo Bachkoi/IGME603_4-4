@@ -7,18 +7,18 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
     // Establish player fields
-    [SerializeField] float cash;
+    [SerializeField] public float cash;
     [SerializeField] float goldBars;
-    [SerializeField] float shotDelay;
+    [SerializeField] public float shotDelay;
     [SerializeField] float shotClock;
-    [SerializeField] float shotAccuracy;
+    [SerializeField] public float shotAccuracy;
     [SerializeField] float score;
     [SerializeField] float timeRemaining;
     [SerializeField] float shotsTaken;
     [SerializeField] float shotsHit;
     [SerializeField] float accuracy;
     [SerializeField] int ammo;
-    [SerializeField] int maxAmmo;
+    [SerializeField] public int maxAmmo;
     [SerializeField] Image reddickle;
     [SerializeField] GameObject crosshair;
     [SerializeField] GameObject manager;
@@ -35,6 +35,13 @@ public class Player : MonoBehaviour
     [SerializeField] Button shopButton;
     [SerializeField] Button restartButton;
     [SerializeField] bool paused;
+    [SerializeField] Button[] shopButtons;
+    [SerializeField] Text[] shopText;
+    [SerializeField] GameObject shopUI;
+    public float fireRatePrice = 100.0f;
+    public float accuracyPrice = 500.0f;
+    public float reloadSpeedPrice = 1000.0f;
+    public float ammoCountPrice = 1000.0f;
 
     Ray raycast;
     public Text scoreText;
@@ -208,6 +215,19 @@ public class Player : MonoBehaviour
         score = 0.0f;
         ammo = maxAmmo;
         manager.GetComponent<EnemyManager>().targetsSpawned = 0;
+        foreach(GameObject sixShot in sixShotReload)
+        {
+            sixShot.SetActive(false);
+        }
+        foreach (GameObject eightShot in eightShotReload)
+        {
+            eightShot.SetActive(false);
+
+        }
+        foreach (GameObject twelveShot in twelveShotReload)
+        {
+            twelveShot.SetActive(false);
+        }
     }
 
     void Shoot()
@@ -333,6 +353,111 @@ public class Player : MonoBehaviour
 
     void OpenShop()
     {
+        shopUI.SetActive(true);
+        shopButtons[0].GetComponent<Button>().onClick.AddListener(BuyAccuracy);
+        shopButtons[1].GetComponent<Button>().onClick.AddListener(BuyFireRate);
+        shopButtons[2].GetComponent<Button>().onClick.AddListener(BuyReloadSpeed);
+        shopButtons[3].GetComponent<Button>().onClick.AddListener(BuyAmmo);
+        shopButtons[4].GetComponent<Button>().onClick.AddListener(CloseShop);
+        foreach (GameObject sixShot in sixShotReload)
+        {
+            sixShot.SetActive(false);
+        }
+        foreach (GameObject eightShot in eightShotReload)
+        {
+            eightShot.SetActive(false);
+
+        }
+        foreach (GameObject twelveShot in twelveShotReload)
+        {
+            twelveShot.SetActive(false);
+        }
+        foreach(GameObject obstacle in manager.GetComponent<EnemyManager>().obstacles)
+        {
+            obstacle.SetActive(false);
+        }
+    }
+
+    public void BuyFireRate()
+    {
+        if (cash > fireRatePrice)
+        {
+            if (shotDelay >= 0.1f)
+            {
+                cash -= fireRatePrice;
+                shotDelay -= 0.1f;
+                fireRatePrice *= 2.0f;
+                cashText.text = "$" + cash;
+            }
+            else
+            {
+                Debug.Log("Maxed out");
+            }
+        }
+    }
+
+    public void BuyAccuracy()
+    {
+        if (cash > accuracyPrice)
+        {
+            if (shotAccuracy <= 0.9f)
+            {
+                cash -= accuracyPrice;
+                shotAccuracy += 0.1f;
+                accuracyPrice *= 2.0f;
+                cashText.text = "$" + cash;
+            }
+            else
+            {
+                Debug.Log("Maxed out");
+            }
+        }
+    }
+
+    public void BuyAmmo()
+    {
+        if (cash > ammoCountPrice)
+        {
+            if (maxAmmo == 6)
+            {
+                cash -= ammoCountPrice;
+                maxAmmo = 8;
+                ammoCountPrice *= 2.0f;
+                cashText.text = "$" + cash;
+            }
+            if (maxAmmo == 8)
+            {
+                cash -= ammoCountPrice;
+                maxAmmo = 12;
+                ammoCountPrice *= 2.0f;
+                cashText.text = "$" + cash;
+            }
+            else
+            {
+                Debug.Log("Maxed out");
+            }
+        }
+    }
+
+    public void BuyReloadSpeed()
+    {
+        if (cash > reloadSpeedPrice)
+        {
+            if (shotDelay >= 0.1f)
+            {
+                // Speed up the reload
+                Debug.Log("Reload sped up");
+            }
+            else
+            {
+                Debug.Log("Maxed out");
+            }
+        }
+    }
+
+    public void CloseShop()
+    {
+        shopUI.SetActive(false);
 
     }
 }
