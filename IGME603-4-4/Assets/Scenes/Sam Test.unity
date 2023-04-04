@@ -1886,13 +1886,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 429338221}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.23, y: 4.34, z: 0}
-  m_LocalScale: {x: 0.05, y: 0.05, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 340.96097, y: 204.67091, z: -400}
+  m_LocalScale: {x: 2.3579597, y: 2.3579597, z: 47.159195}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_Father: {fileID: 1972423921}
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &435342699
 GameObject:
@@ -7730,7 +7730,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1783853205}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -400}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8501,6 +8501,7 @@ RectTransform:
   - {fileID: 1309554578}
   - {fileID: 1497827256}
   - {fileID: 1783853206}
+  - {fileID: 429338223}
   - {fileID: 2084386765}
   m_Father: {fileID: 0}
   m_RootOrder: 1
@@ -9142,7 +9143,7 @@ RectTransform:
   - {fileID: 2084029184}
   - {fileID: 2072908639}
   m_Father: {fileID: 1972423921}
-  m_RootOrder: 12
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -9186,7 +9187,7 @@ MonoBehaviour:
   shotClock: 0
   shotAccuracy: 1
   score: 0
-  timeRemaining: 10
+  timeRemaining: 60
   shotsTaken: 0
   shotsHit: 0
   accuracy: 0
@@ -9265,6 +9266,8 @@ MonoBehaviour:
   - {fileID: 1380517666}
   - {fileID: 2084029185}
   shopUI: {fileID: 2084386764}
+  obstaclesHolder: {fileID: 584135172}
+  revolver: {fileID: 184573167}
   fireRatePrice: 100
   accuracyPrice: 500
   reloadSpeedPrice: 1000
@@ -9277,6 +9280,14 @@ MonoBehaviour:
   targetsHitText: {fileID: 1360307657}
   targetsSeenText: {fileID: 1752310554}
   cashText: {fileID: 1783853207}
+  playerFireRate: {fileID: 1781636918}
+  playerAmmoCount: {fileID: 383994920}
+  playerReloadSpeed: {fileID: 2084029185}
+  playerAccuracy: {fileID: 1380517666}
+  upgradeFireRate: {fileID: 238398374}
+  upgradeAmmoCount: {fileID: 226522120}
+  upgradeReloadSpeed: {fileID: 290353312}
+  upgradeAccuracy: {fileID: 1130712005}
 --- !u!4 &2138881685
 Transform:
   m_ObjectHideFlags: 0
