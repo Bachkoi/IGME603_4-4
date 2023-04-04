@@ -41,7 +41,7 @@ public class Player : MonoBehaviour
     [SerializeField] GameObject obstaclesHolder;
     [SerializeField] GameObject revolver;
     public float fireRatePrice = 100.0f;
-    public float accuracyPrice = 500.0f;
+    public float accuracyPrice = 250.0f;
     public float reloadSpeedPrice = 1000.0f;
     public float ammoCountPrice = 1000.0f;
     bool countedCash = false;
@@ -116,11 +116,30 @@ public class Player : MonoBehaviour
             //reddickle.transform.position = worldMousePos;
             if (hardMode)
             {
-                crosshair.transform.localScale = new Vector3(0.1f,0.1f,0.1f);
+                switch (shotAccuracy)
+                {
+                    case 0.7f:
+                        crosshair.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+                        break;
+
+                    case 0.8f:
+                        crosshair.transform.localScale = new Vector3(0.07f, 0.07f, 0.07f);
+                        break;
+
+                    case 0.9f:
+                        crosshair.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
+                        break;
+
+                    case 1.0f:
+                        crosshair.transform.localScale = new Vector3(0.03f, 0.03f, 0.03f);
+                        break;
+
+                }
+                //crosshair.transform.localScale = new Vector3(0.1f,0.1f,0.1f);
             }
             else
             {
-                crosshair.transform.localScale = new Vector3(0.03f, 0.03f, 0.03f); // https://www.cleanpng.com/png-reticle-clip-art-crosshair-89104/download-png.html
+                //crosshair.transform.localScale = new Vector3(0.03f, 0.03f, 0.03f); // https://www.cleanpng.com/png-reticle-clip-art-crosshair-89104/download-png.html
 
             }
             crosshair.transform.position = worldMousePos;
@@ -257,11 +276,17 @@ public class Player : MonoBehaviour
 
         if (hardMode)
         {
-            float rng = Random.Range(0.7f,shotAccuracy);
+            //float rng = Random.Range(0.7f,shotAccuracy);
+            //tempMousePos.x *= rng;
+            //rng = Random.Range(0.7f, shotAccuracy);
+            //tempMousePos.y *= rng;
+            //rng = Random.Range(0.7f, shotAccuracy);
+            //tempMousePos.z *= rng;
+            float rng = Random.Range(shotAccuracy, 1.0f);
             tempMousePos.x *= rng;
-            rng = Random.Range(0.7f, shotAccuracy);
+            rng = Random.Range(shotAccuracy, 1.0f);
             tempMousePos.y *= rng;
-            rng = Random.Range(0.7f, shotAccuracy);
+            rng = Random.Range(shotAccuracy, 1.0f);
             tempMousePos.z *= rng;
         }
         shotsTaken++;
@@ -375,7 +400,7 @@ public class Player : MonoBehaviour
                 accuracyPrice *= 2.0f;
                 cashText.text = "$" + cash;
                 upgradeAccuracy.text = "Cost: $ " + accuracyPrice; 
-                playerAccuracy.text = "Your gun is now " + accuracy + "% accurate";
+                playerAccuracy.text = "Your gun is now " + (shotAccuracy * 100.0f) + "% accurate";
             }
             else
             {
