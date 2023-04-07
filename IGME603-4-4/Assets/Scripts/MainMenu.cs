@@ -19,8 +19,12 @@ public class MainMenu : MonoBehaviour
 
     public void Options()
     {
-        Debug.Log("options coming soon");
-        //SceneManager.LoadScene("Options");
+        SceneManager.LoadScene("Options");
+    }
+
+    public void Menu()
+    {
+        SceneManager.LoadScene("Menu");
     }
 
 }
