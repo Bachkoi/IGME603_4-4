@@ -20,4 +20,9 @@ public class AfterGameUI : MonoBehaviour
         SceneManager.LoadScene(name);
         Debug.Log("jump to " + name);
     }
+
+    public void Continue()
+    {
+        SceneManager.LoadScene("Sam Test");
+    }
 }

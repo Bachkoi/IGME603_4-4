@@ -17,4 +17,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Market.unity
     guid: 0b865e8fda8003b499285ec5a95b9a58
+  - enabled: 1
+    path: Assets/Scenes/After Game UI.unity
+    guid: 1743971879e616e4eb6ec8d251035d97
+  - enabled: 1
+    path: Assets/Scenes/Options.unity
+    guid: d355f3585c99eee48923ea2dfb123605
   m_configObjects: {}

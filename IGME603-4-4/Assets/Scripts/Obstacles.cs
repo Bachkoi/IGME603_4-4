@@ -9,7 +9,7 @@ public class Obstacles : MonoBehaviour
     [SerializeField] private float patrolInterval;
     [SerializeField] private float patrolSpeed;
     [SerializeField] private GameObject[] patrolPos;
-    [SerializeField] private GameObject[] opponentSpawn;
+    [SerializeField] public GameObject[] opponentSpawn;
     [SerializeField] private int availableSpawnSpot;
 
     private GameObject targetPos;

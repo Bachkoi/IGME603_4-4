@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2803297638462760573}
   - component: {fileID: 3378710615295868165}
   m_Layer: 0
-  m_Name: StaticEnemy
+  m_Name: LeoEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27,8 +27,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8346063100964303099}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0.7408423, y: 2.5469654, z: 0}
+  m_LocalScale: {x: 0.000024485027, y: 0.000024485027, z: 0.000024485027}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -47,7 +47,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.020249188, y: -0.026998758}
+  m_Offset: {x: 0.020249128, y: 0.026993513}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -58,7 +58,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.7634459, y: 4.9299045}
+  m_Size: {x: 2.7634459, y: 5.037889}
   m_EdgeRadius: 0
 --- !u!212 &2803297638462760573
 SpriteRenderer:
@@ -101,7 +101,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 05f6c7d3525c1a748b8922de97a99b20, type: 3}
+  m_Sprite: {fileID: 21300000, guid: db55e0acc7cde5e4fb03de7f7cad614e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -124,6 +124,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee250c557660f9a4b85f5ffcb71a0672, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalTime: 5
+  totalTime: 3
   scale: 0
   isActive: 0

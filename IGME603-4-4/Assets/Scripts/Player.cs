@@ -2,20 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
     // Establish player fields
+    public static Player Instance;
+
     [SerializeField] public float cash;
-    [SerializeField] float goldBars;
     [SerializeField] public float shotDelay;
     [SerializeField] float shotClock;
     [SerializeField] public float shotAccuracy;
     [SerializeField] float score;
     [SerializeField] float timeRemaining;
-    [SerializeField] float shotsTaken;
-    [SerializeField] float shotsHit;
+    [SerializeField] public float shotsTaken;
+    [SerializeField] public float shotsHit;
     [SerializeField] float accuracy;
     [SerializeField] int ammo;
     [SerializeField] public int maxAmmo;
@@ -26,7 +28,7 @@ public class Player : MonoBehaviour
     [SerializeField] AudioSource soundEffects;
     [SerializeField] AudioClip[] sounds;
     [SerializeField] int targetsHitCount;
-    [SerializeField] int targetsSeenCount;
+    [SerializeField] public int targetsSeenCount;
     [SerializeField] bool hardMode;
     [SerializeField] GameObject[] bulletHoles;
     [SerializeField] GameObject[] sixShotReload;
@@ -34,7 +36,7 @@ public class Player : MonoBehaviour
     [SerializeField] GameObject[] twelveShotReload;
     [SerializeField] Button shopButton;
     [SerializeField] Button restartButton;
-    [SerializeField] bool paused;
+    [SerializeField] public bool paused;
     [SerializeField] Button[] shopButtons;
     [SerializeField] Text[] shopText;
     [SerializeField] GameObject shopUI;
@@ -66,16 +68,67 @@ public class Player : MonoBehaviour
     public Text upgradeAmmoCount;
     public Text upgradeReloadSpeed;
     public Text upgradeAccuracy;
+    public float gold;
 
 
+    public Sprite[] revolverImages;
+
+
+    public int startingGun;
+
+    [SerializeField]public int hitStreak;
+
+    [SerializeField] public int missStreak;
+    [SerializeField] public float tempScore;
+
+    private void Awake()
+    {
+        if(Instance != null)
+        {
+            cash = Instance.cash;
+            startingGun = Instance.startingGun;
+            gold = Instance.gold;
+        }
+        Instance = this;
+        cash = Instance.cash;
+        startingGun = Instance.startingGun;
+        gold = Instance.gold;
+        DontDestroyOnLoad(Instance);
+    }
 
 
     // Start is called before the first frame update
     void Start()
     {
-        soundEffects.clip = sounds[0];
+        soundEffects.clip = sounds[5];
         soundEffects.Play();
-        maxAmmo = 6;
+        if(cash >= 0 )
+        {
+            cashText.text = "$ " + cash;
+        }
+        switch (startingGun)
+        {
+            case 0:
+                maxAmmo = 6;
+                ammo = maxAmmo;
+                shotAccuracy = 0.7f;
+                revolver.GetComponent<SpriteRenderer>().sprite = revolverImages[0];
+                break;
+
+            case 1:
+                maxAmmo = 8;
+                ammo = maxAmmo;
+                shotAccuracy = 0.8f;
+                revolver.GetComponent<SpriteRenderer>().sprite = revolverImages[2];
+                break;
+
+            case 2:
+                maxAmmo = 12;
+                ammo = maxAmmo;
+                shotAccuracy = 0.9f;
+                revolver.GetComponent<SpriteRenderer>().sprite = revolverImages[4];
+                break;
+        }
         ammo = maxAmmo;
         paused = false;
     }
@@ -89,17 +142,68 @@ public class Player : MonoBehaviour
         }
         if(timeRemaining <= 0)
         {
-            timeText.text = "Time Remaining: 0.0";
-            if(countedCash == false)
+            if(timeText != null)
             {
-                CalculateCash();
-                countedCash = true;
+                timeText.text = "Time Remaining: 0.0";
+                if (countedCash == false)
+                {
+                    CalculateCash();
+                    countedCash = true;
+                }
             }
+
 
         }
         if (timeRemaining > 0.0f)
         {
+            if (Camera.main.ScreenToWorldPoint(Input.mousePosition).x < 0)
+            {
+                switch (startingGun)
+                {
+                    case 0:
+                        revolver.GetComponent<SpriteRenderer>().sprite = revolverImages[0];
+                        break;
+                    case 1:
+                        revolver.GetComponent<SpriteRenderer>().sprite = revolverImages[2];
+                        break;
+                    case 2:
+                        revolver.GetComponent<SpriteRenderer>().sprite = revolverImages[4];
 
+                        break;
+                }
+            }
+            else
+            {
+                switch (startingGun)
+                {
+                    case 0:
+                        revolver.GetComponent<SpriteRenderer>().sprite = revolverImages[1];
+
+                        break;
+                    case 1:
+                        revolver.GetComponent<SpriteRenderer>().sprite = revolverImages[3];
+
+                        break;
+                    case 2:
+                        revolver.GetComponent<SpriteRenderer>().sprite = revolverImages[5];
+
+                        break;
+                }
+            }
+            if (hitStreak >= 3)
+            {
+                // Player Good sound
+                soundEffects.clip = sounds[3];
+                soundEffects.Play();
+                hitStreak = 0;
+            }
+            if (missStreak >= 3)
+            {
+                // Play other sound
+                soundEffects.clip = sounds[4];
+                soundEffects.Play();
+                missStreak = 0;
+            }
             timeText.text = "Time Remaining: " + timeRemaining.ToString("n2");
             ammoCount.text = "Ammo: " + ammo;
             if(shotsTaken > 0)
@@ -114,32 +218,23 @@ public class Player : MonoBehaviour
             mousePos.z = Camera.main.nearClipPlane;
             Vector3 worldMousePos = Camera.main.ScreenToWorldPoint(mousePos);
             //reddickle.transform.position = worldMousePos;
-            if (hardMode)
+            switch (shotAccuracy)
             {
-                switch (shotAccuracy)
-                {
-                    case 0.7f:
-                        crosshair.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-                        break;
+                case 0.7f:
+                    crosshair.transform.localScale = new Vector3(0.12f, 0.12f, 0.12f); // https://www.cleanpng.com/png-reticle-clip-art-crosshair-89104/download-png.html
+                    break;
 
-                    case 0.8f:
-                        crosshair.transform.localScale = new Vector3(0.07f, 0.07f, 0.07f);
-                        break;
+                case 0.8f:
+                    crosshair.transform.localScale = new Vector3(0.07f, 0.07f, 0.07f);
+                    break;
 
-                    case 0.9f:
-                        crosshair.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
-                        break;
+                case 0.9f:
+                    crosshair.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
+                    break;
 
-                    case 1.0f:
-                        crosshair.transform.localScale = new Vector3(0.03f, 0.03f, 0.03f);
-                        break;
-
-                }
-                //crosshair.transform.localScale = new Vector3(0.1f,0.1f,0.1f);
-            }
-            else
-            {
-                //crosshair.transform.localScale = new Vector3(0.03f, 0.03f, 0.03f); // https://www.cleanpng.com/png-reticle-clip-art-crosshair-89104/download-png.html
+                case 1.0f:
+                    crosshair.transform.localScale = new Vector3(0.03f, 0.03f, 0.03f);
+                    break;
 
             }
             crosshair.transform.position = worldMousePos;
@@ -222,17 +317,34 @@ public class Player : MonoBehaviour
         else
         {
             paused = true;
-            gameOverText.text = "GAME OVER, please enter the shop or run it back!";
-            cashText.text = "$" + cash;
-            foreach (GameObject enemy in manager.GetComponent<EnemyManager>().staticEnemies)
+            if(gameOverText != null)
             {
-                enemy.SetActive(false);
+                gameOverText.text = "GAME OVER, please enter the shop or run it back!";
             }
-            manager.GetComponent<EnemyManager>().activeStatic = 0;
-            shopButton.gameObject.SetActive(true);
-            restartButton.gameObject.SetActive(true);
-            restartButton.onClick.AddListener(RestartGame);
-            shopButton.onClick.AddListener(OpenShop);
+            if(cashText != null)
+            {
+                cashText.text = "$" + cash;
+            }
+            if (manager != null)
+            {
+                foreach (GameObject enemy in manager.GetComponent<EnemyManager>().staticEnemies)
+                {
+                    enemy.SetActive(false);
+                }
+                manager.GetComponent<EnemyManager>().activeStatic = 0;
+            }
+            if(shopButton != null)
+            {
+                shopButton.gameObject.SetActive(true);
+                shopButton.onClick.AddListener(OpenShop);
+
+            }
+            if(restartButton != null)
+            {
+                restartButton.gameObject.SetActive(true);
+                restartButton.onClick.AddListener(RestartGame);
+            }
+
         }
 
     }
@@ -272,7 +384,12 @@ public class Player : MonoBehaviour
     void Shoot()
     {
         Vector3 tempMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
+        float rng = Random.Range(shotAccuracy, 1.0f);
+        tempMousePos.x *= rng;
+        rng = Random.Range(shotAccuracy, 1.0f);
+        tempMousePos.y *= rng;
+        rng = Random.Range(shotAccuracy, 1.0f);
+        tempMousePos.z *= rng;
 
         if (hardMode)
         {
@@ -282,12 +399,7 @@ public class Player : MonoBehaviour
             //tempMousePos.y *= rng;
             //rng = Random.Range(0.7f, shotAccuracy);
             //tempMousePos.z *= rng;
-            float rng = Random.Range(shotAccuracy, 1.0f);
-            tempMousePos.x *= rng;
-            rng = Random.Range(shotAccuracy, 1.0f);
-            tempMousePos.y *= rng;
-            rng = Random.Range(shotAccuracy, 1.0f);
-            tempMousePos.z *= rng;
+
         }
         shotsTaken++;
 
@@ -295,7 +407,8 @@ public class Player : MonoBehaviour
         Vector3 tempVec3 = new Vector3(tempMousePos.x, tempMousePos.y, 0.0f);
         GameObject testBulletHole = Instantiate(bulletHoles[bulletRng], tempVec3, transform.rotation);
         testBulletHole.SetActive(true);
-        testBulletHole.GetComponent<BulletHole>().lifeSpan = 3.0f;
+        testBulletHole.GetComponent<BulletHole>().lifeSpan = 2.0f;
+        tempScore = 0.0f;
         foreach (GameObject enemy in manager.GetComponent<EnemyManager>().staticEnemies)
         {
             if (enemy.activeSelf)
@@ -306,12 +419,39 @@ public class Player : MonoBehaviour
                     if ((enemy.GetComponent<BoxCollider2D>().bounds.max.y > tempMousePos.y) && (enemy.GetComponent<BoxCollider2D>().bounds.min.y < tempMousePos.y)){
                         enemy.SetActive(false);
                         score += 100.0f;
+                        tempScore = 1.0f;
                         manager.GetComponent<EnemyManager>().activeStatic--;
                         enemy.GetComponent<Transform>().localScale = Vector3.one;
                         shotsHit++;
                     }
                 }
             }
+        }
+        if (manager.GetComponent<EnemyManager>().leoTarget.activeSelf)
+        {
+
+            if ((manager.GetComponent<EnemyManager>().leoTarget.GetComponent<BoxCollider2D>().bounds.max.x > tempMousePos.x) && (manager.GetComponent<EnemyManager>().leoTarget.GetComponent<BoxCollider2D>().bounds.min.x < tempMousePos.x))
+            {
+                if ((manager.GetComponent<EnemyManager>().leoTarget.GetComponent<BoxCollider2D>().bounds.max.y > tempMousePos.y) && (manager.GetComponent<EnemyManager>().leoTarget.GetComponent<BoxCollider2D>().bounds.min.y < tempMousePos.y))
+                {
+                    manager.GetComponent<EnemyManager>().leoTarget.SetActive(false);
+                    score += 1000.0f;
+                    tempScore = 1.0f;
+                    manager.GetComponent<EnemyManager>().activeStatic--;
+                    manager.GetComponent<EnemyManager>().leoTarget.GetComponent<Transform>().localScale = Vector3.one;
+                    shotsHit++;
+                }
+            }
+        }
+        if(tempScore <= 0.0f)
+        {
+            hitStreak = 0;
+            missStreak++;
+        }
+        else
+        {
+            hitStreak++;
+            missStreak = 0;
         }
         // Play sound
         soundEffects.clip = sounds[1];
@@ -345,12 +485,14 @@ public class Player : MonoBehaviour
 
     void OpenShop()
     {
-        shopUI.SetActive(true);
-        shopButtons[0].GetComponent<Button>().onClick.AddListener(BuyAccuracy);
-        shopButtons[1].GetComponent<Button>().onClick.AddListener(BuyFireRate);
-        shopButtons[2].GetComponent<Button>().onClick.AddListener(BuyReloadSpeed);
-        shopButtons[3].GetComponent<Button>().onClick.AddListener(BuyAmmo);
-        shopButtons[4].GetComponent<Button>().onClick.AddListener(CloseShop);
+        //shopUI.SetActive(true);
+        //shopButtons[0].GetComponent<Button>().onClick.AddListener(BuyAccuracy);
+        //shopButtons[1].GetComponent<Button>().onClick.AddListener(BuyFireRate);
+        //shopButtons[2].GetComponent<Button>().onClick.AddListener(BuyReloadSpeed);
+        //shopButtons[3].GetComponent<Button>().onClick.AddListener(BuyAmmo);
+        //shopButtons[4].GetComponent<Button>().onClick.AddListener(CloseShop);
+        paused = true;
+        SceneManager.LoadScene("After Game UI");
         foreach (GameObject sixShot in sixShotReload)
         {
             sixShot.SetActive(false);
