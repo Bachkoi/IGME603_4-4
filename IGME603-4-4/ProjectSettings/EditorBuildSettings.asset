@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Sam Test.unity
     guid: db9f9d47c8ffd4d4bbdc3e3f71fdf144
+  - enabled: 1
+    path: Assets/Scenes/Market.unity
+    guid: 0b865e8fda8003b499285ec5a95b9a58
   m_configObjects: {}
